@@ -7,7 +7,7 @@ import java.io.Serializable;
 public class CoinResponse implements Serializable {
     private Long id;
     private String name;
-    private Float value;
+    private Double value;
 
     public CoinResponse(Coin coin) {
         this.id = coin.getId();
@@ -34,11 +34,11 @@ public class CoinResponse implements Serializable {
         this.name = name;
     }
 
-    public Float getValue() {
+    public Double getValue() {
         return value;
     }
 
-    public void setValue(Float value) {
+    public void setValue(Double value) {
         this.value = value;
     }
 }
