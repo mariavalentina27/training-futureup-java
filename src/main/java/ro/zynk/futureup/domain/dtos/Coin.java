@@ -1,5 +1,7 @@
 package ro.zynk.futureup.domain.dtos;
 
+import ro.zynk.futureup.controllers.responses.CoinResponse;
+
 import javax.persistence.*;
 
 @Entity
@@ -16,6 +18,13 @@ public class Coin {
     @Column
     private Float value;
 
+    public Coin() {
+    }
+
+    public Coin(CoinResponse coin) {
+        this.name = coin.getName();
+        this.value = coin.getValue();;
+    }
 
     public Long getId() {
         return id;
