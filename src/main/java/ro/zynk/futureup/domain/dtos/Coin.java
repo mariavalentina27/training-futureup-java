@@ -16,7 +16,7 @@ public class Coin {
     private String name;
 
     @Column
-    private Float value;
+    private Double value;
 
     public Coin() {
     }
@@ -24,6 +24,10 @@ public class Coin {
     public Coin(CoinResponse coin) {
         this.name = coin.getName();
         this.value = coin.getValue();;
+    }
+    public Coin(String name, Double value) {
+        this.name = name;
+        this.value = value;
     }
 
     public Long getId() {
@@ -42,14 +46,11 @@ public class Coin {
         this.name = name;
     }
 
-    public Float getValue() {
+    public Double getValue() {
         return value;
     }
 
-    public void setValue(Float value) {
+    public void setValue(Double value) {
         this.value = value;
     }
-
-
-
 }
