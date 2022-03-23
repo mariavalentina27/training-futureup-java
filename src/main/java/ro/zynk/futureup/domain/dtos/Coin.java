@@ -2,15 +2,13 @@ package ro.zynk.futureup.domain.dtos;
 
 import ro.zynk.futureup.controllers.responses.CoinResponse;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "coins")
-public class Coin {
-    @Id
-    @GeneratedValue(generator = "sequence", strategy= GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "sequence", allocationSize = 10)
-    protected Long id;
+public class Coin extends BaseEntity {
 
     @Column
     private String name;
@@ -23,20 +21,14 @@ public class Coin {
 
     public Coin(CoinResponse coin) {
         this.name = coin.getName();
-        this.value = coin.getValue();;
+        this.value = coin.getValue();
     }
+
     public Coin(String name, Double value) {
         this.name = name;
         this.value = value;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

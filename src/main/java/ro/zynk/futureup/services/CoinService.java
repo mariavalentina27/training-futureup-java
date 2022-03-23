@@ -1,7 +1,6 @@
 package ro.zynk.futureup.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ro.zynk.futureup.controllers.responses.CoinResponse;
 import ro.zynk.futureup.domain.dtos.Coin;
@@ -30,8 +29,8 @@ public class CoinService {
     }
 
     public CoinResponse saveNewCoin(CoinResponse coinResponse) {
-        Coin coinEntity=new Coin(coinResponse);
-        coinEntity=coinRepository.save(coinEntity);
+        Coin coinEntity = new Coin(coinResponse);
+        coinEntity = coinRepository.save(coinEntity);
         return new CoinResponse(coinEntity);
     }
 }

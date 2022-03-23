@@ -20,11 +20,12 @@ public class CoinController {
     }
 
     @GetMapping(value = "/all_coins")
-    public List<CoinResponse> getAllCoins(){
+    public List<CoinResponse> getAllCoins() {
         return coinService.getAllCoins();
     }
-    @PostMapping()
-    public ResponseEntity<CoinResponse> saveNewCoin(@RequestBody  CoinResponse coinResponse){
+
+    @PostMapping
+    public ResponseEntity<CoinResponse> saveNewCoin(@RequestBody CoinResponse coinResponse) {
         return new ResponseEntity<>(coinService.saveNewCoin(coinResponse), HttpStatus.OK);
     }
 }
