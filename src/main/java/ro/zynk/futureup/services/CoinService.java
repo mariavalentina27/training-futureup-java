@@ -11,11 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class WalletService {
+public class CoinService {
     private CoinRepository coinRepository;
 
     @Autowired
-    public WalletService(CoinRepository coinRepository) {
+    public CoinService(CoinRepository coinRepository) {
         this.coinRepository = coinRepository;
     }
 
