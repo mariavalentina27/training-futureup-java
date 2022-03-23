@@ -25,6 +25,6 @@ public class CoinController {
     }
     @PostMapping()
     public ResponseEntity<CoinResponse> saveNewCoin(@RequestBody  CoinResponse coinResponse){
-        return new ResponseEntity<>(walletService.saveNewCoin(coinResponse), HttpStatus.OK);
+        return new ResponseEntity<>(coinService.saveNewCoin(coinResponse), HttpStatus.OK);
     }
 }
