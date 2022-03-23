@@ -5,22 +5,22 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ro.zynk.futureup.controllers.responses.CoinResponse;
-import ro.zynk.futureup.services.WalletService;
+import ro.zynk.futureup.services.CoinService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/wallet")
-public class WalletController {
-    private WalletService walletService;
+@RequestMapping("/coins")
+public class CoinController {
+    private CoinService coinService;
 
     @Autowired
-    public WalletController(WalletService walletService) {
-        this.walletService = walletService;
+    public CoinController(CoinService coinService) {
+        this.coinService = coinService;
     }
 
     @GetMapping(value = "/all_coins")
     public List<CoinResponse> getAllCoins(){
-        return walletService.getAllCoins();
+        return coinService.getAllCoins();
     }
 }
