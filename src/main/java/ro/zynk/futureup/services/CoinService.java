@@ -1,18 +1,19 @@
 package ro.zynk.futureup.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ro.zynk.futureup.controllers.responses.CoinResponse;
 import ro.zynk.futureup.domain.dtos.Coin;
 import ro.zynk.futureup.domain.repositories.CoinRepository;
+import ro.zynk.futureup.exceptions.DuplicateEntityException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CoinService {
-    private CoinRepository coinRepository;
+    private final CoinRepository coinRepository;
 
     @Autowired
     public CoinService(CoinRepository coinRepository) {
@@ -29,9 +30,15 @@ public class CoinService {
         return coinResponseList;
     }
 
-    public CoinResponse saveNewCoin(CoinResponse coinResponse) {
-        Coin coinEntity=new Coin(coinResponse);
-        coinEntity=coinRepository.save(coinEntity);
+    public CoinResponse saveNewCoin(CoinResponse coinResponse) throws DuplicateEntityException {
+        Optional<Coin> coin = coinRepository.findByName(coinResponse.getName());
+
+        if (coin.isPresent()) {
+            throw new DuplicateEntityException("Duplicate coin with name " + coinResponse.getName());
+        }
+
+        Coin coinEntity = new Coin(coinResponse);
+        coinEntity = coinRepository.save(coinEntity);
         return new CoinResponse(coinEntity);
     }
 }

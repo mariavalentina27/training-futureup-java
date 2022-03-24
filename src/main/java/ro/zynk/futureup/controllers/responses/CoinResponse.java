@@ -2,9 +2,7 @@ package ro.zynk.futureup.controllers.responses;
 
 import ro.zynk.futureup.domain.dtos.Coin;
 
-import java.io.Serializable;
-
-public class CoinResponse implements Serializable {
+public class CoinResponse extends BaseResponse {
     private Long id;
     private String name;
     private Double value;
