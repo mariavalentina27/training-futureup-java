@@ -13,15 +13,13 @@ import javax.annotation.PostConstruct;
 
 @Component
 public class DbInitializer {
-    private CoinRepository coinRepository;
-    private WalletRepository walletRepository;
-    private CoinAmountRepository coinAmountRepository;
+    private final CoinRepository coinRepository;
+    private final WalletRepository walletRepository;
 
     @Autowired
     public DbInitializer(CoinRepository coinRepository, WalletRepository walletRepository, CoinAmountRepository coinAmountRepository) {
         this.coinRepository = coinRepository;
         this.walletRepository = walletRepository;
-        this.coinAmountRepository = coinAmountRepository;
     }
 
     @PostConstruct

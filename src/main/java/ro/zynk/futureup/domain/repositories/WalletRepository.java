@@ -6,5 +6,4 @@ import ro.zynk.futureup.domain.dtos.Wallet;
 
 @Repository
 public interface WalletRepository extends PagingAndSortingRepository<Wallet, Long> {
-    Wallet getById(Long id);
 }

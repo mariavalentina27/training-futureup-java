@@ -2,13 +2,10 @@ package ro.zynk.futureup.controllers.responses;
 
 import ro.zynk.futureup.domain.dtos.Wallet;
 
-public class WalletResponse {
+public class WalletResponse extends BaseResponse {
     private Long id;
 
     private String name;
-
-    public WalletResponse() {
-    }
 
     public WalletResponse(Wallet wallet) {
         this.id = wallet.getId();

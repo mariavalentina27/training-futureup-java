@@ -5,8 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ro.zynk.futureup.controllers.requests.CoinTransactionRequest;
-import ro.zynk.futureup.controllers.responses.CoinTransactionResponse;
-import ro.zynk.futureup.controllers.responses.WalletResponse;
+import ro.zynk.futureup.controllers.responses.*;
+import ro.zynk.futureup.exceptions.NotFoundException;
 import ro.zynk.futureup.services.WalletService;
 
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/wallet")
 public class WalletController {
-    private WalletService walletService;
+    private final WalletService walletService;
 
     @Autowired
     public WalletController(WalletService walletService) {
@@ -22,23 +22,35 @@ public class WalletController {
     }
 
     @PostMapping
-    public ResponseEntity<WalletResponse> saveWallet(@RequestBody WalletResponse walletResponse) {
+    public ResponseEntity<BaseResponse> saveWallet(@RequestBody WalletResponse walletResponse) {
         return new ResponseEntity<>(walletService.saveNewWallet(walletResponse), HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<WalletResponse> getWalletById(@PathVariable("id") Long id) {
-        return new ResponseEntity<>(walletService.getWallet(id), HttpStatus.OK);
+    public ResponseEntity<BaseResponse> getWalletById(@PathVariable("id") Long id) {
+        try {
+            return new ResponseEntity<>(walletService.getWallet(id), HttpStatus.OK);
+        } catch (NotFoundException e) {
+            return new ResponseEntity<>(new ErrorResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PutMapping(value = "/buy_coin")
-    public ResponseEntity<CoinTransactionResponse> buyCoin(@RequestBody CoinTransactionRequest buyCoinRequest) {
-        return new ResponseEntity<>(walletService.buyCoin(buyCoinRequest), HttpStatus.OK);
+    public ResponseEntity<BaseResponse> buyCoin(@RequestBody CoinTransactionRequest buyCoinRequest) {
+        try {
+            return new ResponseEntity<>(walletService.buyCoin(buyCoinRequest), HttpStatus.OK);
+        } catch (NotFoundException e) {
+            return new ResponseEntity<>(new ErrorResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping(value = "/get_all_owned_coins/{walletId}")
-    public ResponseEntity<List<CoinTransactionResponse>> getAllOwnedCoinsFromWallet(@PathVariable("walletId") Long walletId) {
-        return new ResponseEntity<>(walletService.getAllCoinsFromWallet(walletId),HttpStatus.OK);
+    public ResponseEntity<BaseResponse> getAllOwnedCoinsFromWallet(@PathVariable("walletId") Long walletId) {
+        try {
+            return new ResponseEntity<>(new ListCoinTransactionResponse(walletService.getAllCoinsFromWallet(walletId)), HttpStatus.OK);
+        } catch (NotFoundException e) {
+            return new ResponseEntity<>(new ErrorResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
+        }
 
     }
 }

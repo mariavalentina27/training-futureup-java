@@ -2,9 +2,7 @@ package ro.zynk.futureup.controllers.responses;
 
 import ro.zynk.futureup.domain.dtos.CoinAmount;
 
-import java.io.Serializable;
-
-public class CoinTransactionResponse implements Serializable {
+public class CoinTransactionResponse extends BaseResponse {
     private CoinResponse coinResponse;
     private WalletResponse walletResponse;
     private Float amount;
@@ -19,9 +17,9 @@ public class CoinTransactionResponse implements Serializable {
     }
 
     public CoinTransactionResponse(CoinAmount coinAmount) {
-        this.coinResponse=new CoinResponse(coinAmount.getCoin());
-        this.walletResponse= new WalletResponse(coinAmount.getWallet());
-        this.amount=coinAmount.getAmount();
+        this.coinResponse = new CoinResponse(coinAmount.getCoin());
+        this.walletResponse = new WalletResponse(coinAmount.getWallet());
+        this.amount = coinAmount.getAmount();
     }
 
     public CoinResponse getCoinResponse() {
