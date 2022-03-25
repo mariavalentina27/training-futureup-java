@@ -38,7 +38,7 @@ public class WalletController {
 
     @GetMapping(value = "/get_all_owned_coins/{walletId}")
     public ResponseEntity<List<CoinTransactionResponse>> getAllOwnedCoinsFromWallet(@PathVariable("walletId") Long walletId) {
-        return new ResponseEntity<>(walletService.getAllCoinsFromWallet(walletId),HttpStatus.OK);
+        return new ResponseEntity<>(walletService.getAllCoinsFromWallet(walletId), HttpStatus.OK);
 
     }
 }

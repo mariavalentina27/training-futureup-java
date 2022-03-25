@@ -19,9 +19,9 @@ public class CoinTransactionResponse implements Serializable {
     }
 
     public CoinTransactionResponse(CoinAmount coinAmount) {
-        this.coinResponse=new CoinResponse(coinAmount.getCoin());
-        this.walletResponse= new WalletResponse(coinAmount.getWallet());
-        this.amount=coinAmount.getAmount();
+        this.coinResponse = new CoinResponse(coinAmount.getCoin());
+        this.walletResponse = new WalletResponse(coinAmount.getWallet());
+        this.amount = coinAmount.getAmount();
     }
 
     public CoinResponse getCoinResponse() {
