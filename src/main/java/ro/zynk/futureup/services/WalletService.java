@@ -9,10 +9,12 @@ import ro.zynk.futureup.controllers.responses.WalletResponse;
 import ro.zynk.futureup.domain.dtos.Coin;
 import ro.zynk.futureup.domain.dtos.CoinAmount;
 import ro.zynk.futureup.domain.dtos.Wallet;
+import ro.zynk.futureup.domain.repositories.CoinAmountRepository;
 import ro.zynk.futureup.domain.repositories.CoinRepository;
 import ro.zynk.futureup.domain.repositories.WalletRepository;
 import ro.zynk.futureup.exceptions.NotFoundException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,11 +23,13 @@ import java.util.stream.Collectors;
 public class WalletService {
     private final WalletRepository walletRepository;
     private final CoinRepository coinRepository;
+    private CoinAmountRepository coinAmountRepository;
 
     @Autowired
-    public WalletService(WalletRepository walletRepository, CoinRepository coinRepository) {
+    public WalletService(WalletRepository walletRepository, CoinRepository coinRepository, CoinAmountRepository coinAmountRepository) {
         this.walletRepository = walletRepository;
         this.coinRepository = coinRepository;
+        this.coinAmountRepository = coinAmountRepository;
     }
 
     public WalletResponse saveNewWallet(WalletResponse walletResponse) {
@@ -65,6 +69,12 @@ public class WalletService {
         if (walletOpt.isEmpty()) {
             throw new NotFoundException("Wallet not found!");
         }
-        return walletOpt.get().getCoinAmounts().stream().map(CoinTransactionResponse::new).collect(Collectors.toList());
+        List<CoinAmount> coinAmounts = coinAmountRepository.findAllByWallet(wallet);
+        List<CoinTransactionResponse> coinTransactionResponses = new ArrayList<>();
+        for (CoinAmount coinAmount :
+                coinAmounts) {
+            coinTransactionResponses.add(new CoinTransactionResponse(coinAmount));
+        }
+        return coinTransactionResponses;
     }
 }

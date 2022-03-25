@@ -9,7 +9,6 @@ import ro.zynk.futureup.controllers.responses.*;
 import ro.zynk.futureup.exceptions.NotFoundException;
 import ro.zynk.futureup.services.WalletService;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/wallet")
