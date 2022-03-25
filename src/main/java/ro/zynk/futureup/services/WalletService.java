@@ -69,7 +69,7 @@ public class WalletService {
         if (walletOpt.isEmpty()) {
             throw new NotFoundException("Wallet not found!");
         }
-        List<CoinAmount> coinAmounts = coinAmountRepository.findAllByWallet(wallet);
+        List<CoinAmount> coinAmounts = coinAmountRepository.findAllByWallet(walletOpt.get());
         List<CoinTransactionResponse> coinTransactionResponses = new ArrayList<>();
         for (CoinAmount coinAmount :
                 coinAmounts) {
