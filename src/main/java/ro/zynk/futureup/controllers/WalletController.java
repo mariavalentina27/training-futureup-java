@@ -5,7 +5,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ro.zynk.futureup.controllers.requests.CoinTransactionRequest;
-import ro.zynk.futureup.controllers.responses.*;
+import ro.zynk.futureup.controllers.responses.BaseResponse;
+import ro.zynk.futureup.controllers.responses.ErrorResponse;
+import ro.zynk.futureup.controllers.responses.WalletResponse;
 import ro.zynk.futureup.exceptions.NotFoundException;
 import ro.zynk.futureup.services.WalletService;
 

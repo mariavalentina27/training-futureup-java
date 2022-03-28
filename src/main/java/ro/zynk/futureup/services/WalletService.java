@@ -15,7 +15,6 @@ import ro.zynk.futureup.exceptions.NotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class WalletService {
@@ -51,7 +50,7 @@ public class WalletService {
         List<WalletResponse> walletResponses = new ArrayList<>();
         for (Wallet w :
                 wallets) {
-                walletResponses.add(new WalletResponse(w));
+            walletResponses.add(new WalletResponse(w));
         }
 
         return new ListWalletResponse(walletResponses);
@@ -66,11 +65,19 @@ public class WalletService {
         if (walletOpt.isEmpty()) {
             throw new NotFoundException("Wallet not found!");
         }
+
         Coin coin = coinOpt.get();
         Wallet wallet = walletOpt.get();
-        CoinAmount coinAmount = new CoinAmount(wallet, coin, buyCoinRequest.getAmount());
-        wallet.getCoinAmounts().add(coinAmount);
-        walletRepository.save(wallet);
+
+        // find existing coin amount to update
+        CoinAmount coinAmount = coinAmountRepository.findByWalletAndCoin(wallet, coin);
+        if (coinAmount == null) {
+            // create new coin amount if it doesn't exist
+            coinAmount = new CoinAmount(wallet, coin, 0F);
+        }
+        coinAmount.setAmount(coinAmount.getAmount() + buyCoinRequest.getAmount());
+
+        coinAmountRepository.save(coinAmount);
         return new CoinTransactionResponse(new CoinResponse(coin), new WalletResponse(wallet), coinAmount.getAmount());
     }
 
