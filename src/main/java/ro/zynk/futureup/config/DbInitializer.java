@@ -24,7 +24,7 @@ public class DbInitializer {
 
     @PostConstruct
     public void initializer() {
-        Wallet wallet = new Wallet("BigDickEnergy");
+        Wallet wallet = new Wallet("Wallet Andrei");
         walletRepository.save(wallet);
         Coin coinBTC = new Coin("Bitcoin", 41657.58);
         coinRepository.save(coinBTC);
