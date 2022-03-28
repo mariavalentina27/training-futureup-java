@@ -98,3 +98,7 @@ In order to use this database engine there is no need to download any additional
     spring.jackson.default-property-inclusion=non_null
 
 The fields `spring.datasource.username` and  `spring.datasource.password` correspond to the username and password you set during the PostgreSQL installation process. The default user is `postgres`
+
+# 4. Postman
+
+## 4.1 Importing a collection into Postman
