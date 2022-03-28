@@ -11,7 +11,7 @@ import ro.zynk.futureup.services.WalletService;
 
 
 @RestController
-@RequestMapping("/wallet")
+@RequestMapping("/wallets")
 public class WalletController {
     private final WalletService walletService;
 
@@ -20,9 +20,19 @@ public class WalletController {
         this.walletService = walletService;
     }
 
-    @PostMapping
+    @PostMapping(value = "")
     public ResponseEntity<BaseResponse> saveWallet(@RequestBody WalletResponse walletResponse) {
         return new ResponseEntity<>(walletService.saveNewWallet(walletResponse), HttpStatus.OK);
+    }
+
+
+    @GetMapping(value = "")
+    public ResponseEntity<BaseResponse> getWallets() {
+        try {
+            return new ResponseEntity<>(walletService.getWallets(), HttpStatus.OK);
+        } catch (NotFoundException e) {
+            return new ResponseEntity<>(new ErrorResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping(value = "/{id}")
@@ -46,7 +56,7 @@ public class WalletController {
     @GetMapping(value = "/get_all_owned_coins/{walletId}")
     public ResponseEntity<BaseResponse> getAllOwnedCoinsFromWallet(@PathVariable("walletId") Long walletId) {
         try {
-            return new ResponseEntity<>(new ListCoinTransactionResponse(walletService.getAllCoinsFromWallet(walletId)), HttpStatus.OK);
+            return new ResponseEntity<>(walletService.getAllCoinsFromWallet(walletId), HttpStatus.OK);
         } catch (NotFoundException e) {
             return new ResponseEntity<>(new ErrorResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
         }

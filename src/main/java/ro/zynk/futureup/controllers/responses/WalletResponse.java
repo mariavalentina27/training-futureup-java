@@ -7,6 +7,9 @@ public class WalletResponse extends BaseResponse {
 
     private String name;
 
+    public WalletResponse() {
+    }
+
     public WalletResponse(Wallet wallet) {
         this.id = wallet.getId();
         this.name = wallet.getName();

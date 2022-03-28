@@ -3,9 +3,7 @@ package ro.zynk.futureup.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ro.zynk.futureup.controllers.requests.CoinTransactionRequest;
-import ro.zynk.futureup.controllers.responses.CoinResponse;
-import ro.zynk.futureup.controllers.responses.CoinTransactionResponse;
-import ro.zynk.futureup.controllers.responses.WalletResponse;
+import ro.zynk.futureup.controllers.responses.*;
 import ro.zynk.futureup.domain.dtos.Coin;
 import ro.zynk.futureup.domain.dtos.CoinAmount;
 import ro.zynk.futureup.domain.dtos.Wallet;
@@ -23,7 +21,7 @@ import java.util.stream.Collectors;
 public class WalletService {
     private final WalletRepository walletRepository;
     private final CoinRepository coinRepository;
-    private CoinAmountRepository coinAmountRepository;
+    private final CoinAmountRepository coinAmountRepository;
 
     @Autowired
     public WalletService(WalletRepository walletRepository, CoinRepository coinRepository, CoinAmountRepository coinAmountRepository) {
@@ -47,6 +45,18 @@ public class WalletService {
         return new WalletResponse(wallet);
     }
 
+    public ListWalletResponse getWallets() {
+        List<Wallet> wallets = walletRepository.findAll();
+
+        List<WalletResponse> walletResponses = new ArrayList<>();
+        for (Wallet w :
+                wallets) {
+                walletResponses.add(new WalletResponse(w));
+        }
+
+        return new ListWalletResponse(walletResponses);
+    }
+
     public CoinTransactionResponse buyCoin(CoinTransactionRequest buyCoinRequest) throws NotFoundException {
         Optional<Wallet> walletOpt = walletRepository.findById(buyCoinRequest.getWalletId());
         Optional<Coin> coinOpt = coinRepository.findById(buyCoinRequest.getCoinId());
@@ -64,7 +74,7 @@ public class WalletService {
         return new CoinTransactionResponse(new CoinResponse(coin), new WalletResponse(wallet), coinAmount.getAmount());
     }
 
-    public List<CoinTransactionResponse> getAllCoinsFromWallet(Long walletId) throws NotFoundException {
+    public ListCoinTransactionResponse getAllCoinsFromWallet(Long walletId) throws NotFoundException {
         Optional<Wallet> walletOpt = walletRepository.findById(walletId);
         if (walletOpt.isEmpty()) {
             throw new NotFoundException("Wallet not found!");
@@ -75,6 +85,7 @@ public class WalletService {
                 coinAmounts) {
             coinTransactionResponses.add(new CoinTransactionResponse(coinAmount));
         }
-        return coinTransactionResponses;
+        return new ListCoinTransactionResponse(coinTransactionResponses);
     }
+
 }

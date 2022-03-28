@@ -27,7 +27,7 @@ public class CoinController {
         return coinService.getAllCoins();
     }
 
-    @PostMapping
+    @PostMapping(value = "")
     public ResponseEntity<BaseResponse> saveNewCoin(@RequestBody CoinResponse coinResponse) {
         try {
             return new ResponseEntity<>(coinService.saveNewCoin(coinResponse), HttpStatus.OK);
