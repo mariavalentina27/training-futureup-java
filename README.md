@@ -6,6 +6,7 @@ Make sure you installed the following programs:
 - [IntelliJ IDEA](https://www.jetbrains.com/idea/download/)
 - [JDK 11 ](https://adoptium.net/?variant=openjdk11&jvmVariant=hotspot)
 - [Postman](https://www.postman.com/downloads/)
+- [git command line tool](https://help.github.com/articles/set-up-git)
 
 Optional (if you want to use PostgreSQL database engine):
 - [PostgreSQL 11](https://www.postgresql.org/download/) 
@@ -101,4 +102,7 @@ The fields `spring.datasource.username` and  `spring.datasource.password` corres
 
 # 4. Postman
 
-## 4.1 Importing a collection into Postman
+1. Open `Postman`
+2. Go to `Import`, `File` tab and click `Upload Files`
+3. Go to `other_files/FutureUp.postman_collection.json` and click `Open`
+4. In `Postman`, go to `Collections` and select `FutureUp`
