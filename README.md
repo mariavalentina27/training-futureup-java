@@ -14,17 +14,17 @@ Optional (if you want to use PostgreSQL database engine):
 # 2. How to start
 
 1. After you installed everything clone this project and open IntelliJ IDEA. If prompted with a `Trust and Open Project` alert, click `Trust Project`
-2. Switch the branch to iteration/3
-3. In IntelliJ go to project structure (File -> Project Structure).
-4. In the project tab -> Project SDK select JDK 11. If it is not in the list, press on Add -> SDK... and select the path where you installed JDK 11. Should be a folder that contains "bin", "lib" and other folders.
-5. After choosing JDK 11, wait for the application to get indexed.
+2. Switch the branch to `iteration/3`
+3. In IntelliJ go to project structure (`File` -> `Project Structure`).
+4. In the project tab -> `Project SDK` select `JDK 11`. If it is not in the list, press on `Add` -> `SDK...` and select the path where you installed JDK 11. Should be a folder that contains `bin`, `lib` and other folders.
+5. After choosing `JDK 11`, wait for the application to get indexed.
 6. Right-click the `pom.xml` file and click `Add as Maven project` **OR** click `Load Maven Project` in the floating window in the bottom right.
-7. Right-click the `FutureUpApplication` file in the `Project` pane and click `Run 'FutureUp..`. After this the cofiguration should appear in the top right of the IDE.
+7. Right-click the `FutureUpApplication` file in the `Project` pane and click `Run 'FutureUp..`. After this the configuration should appear in the top right of the IDE.
 
 
 # 3. Database configuration
 
-We offer two configuration options for the database engine: H2 is lightweight and easy to set up while PosgtreSQL is more powerful but a also a bit more complicated. For the scope of this project both options are perfectly fine but we decided to offer both of the options for the sake of diversity.
+We offer two configuration options for the database engine: H2 is lightweight and easy to set up while PostgresSQL is more powerful but a also a bit more complicated. For the scope of this project both options are perfectly fine but we decided to offer both of the options for the sake of diversity.
 
 ## 3.1 For H2 database
 
@@ -97,4 +97,4 @@ In order to use this database engine there is no need to download any additional
     spring.main.allow-bean-definition-overriding=true
     spring.jackson.default-property-inclusion=non_null
 
-The fields `spring.datasource.username` and  `spring.datasource.password` correspond to the username and password you set during the PostgreSQL installation process;
+The fields `spring.datasource.username` and  `spring.datasource.password` correspond to the username and password you set during the PostgreSQL installation process. The default user is `postgres`
