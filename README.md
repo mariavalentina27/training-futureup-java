@@ -104,5 +104,5 @@ The fields `spring.datasource.username` and  `spring.datasource.password` corres
 
 1. Open `Postman`
 2. Go to `Import`, `File` tab and click `Upload Files`
-3. Go to `other_files/FutureUp.postman_collection.json` and click `Open`
+3. Go to `other_files/FutureUp.postman_collection.json` (on branch `iteration/3`) and click `Open`
 4. In `Postman`, go to `Collections` and select `FutureUp`
