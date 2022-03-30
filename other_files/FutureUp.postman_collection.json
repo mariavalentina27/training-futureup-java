@@ -134,6 +134,34 @@
 			"response": []
 		},
 		{
+			"name": "Exchange Coin",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"walletId\" : 2,\r\n    \"coinId\": 14,\r\n    \"amount\" : 522\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/wallets/buy_coin",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"wallets",
+						"buy_coin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Get All Owned Coins By Wallet ID",
 			"request": {
 				"method": "GET",
