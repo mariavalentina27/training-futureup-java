@@ -5,12 +5,12 @@ import ro.zynk.futureup.domain.dtos.CoinAmount;
 public class CoinTransactionResponse extends BaseResponse {
     private CoinResponse coinResponse;
     private WalletResponse walletResponse;
-    private Float amount;
+    private Double amount;
 
     public CoinTransactionResponse() {
     }
 
-    public CoinTransactionResponse(CoinResponse coinResponse, WalletResponse walletResponse, Float amount) {
+    public CoinTransactionResponse(CoinResponse coinResponse, WalletResponse walletResponse, Double amount) {
         this.coinResponse = coinResponse;
         this.walletResponse = walletResponse;
         this.amount = amount;
@@ -38,11 +38,11 @@ public class CoinTransactionResponse extends BaseResponse {
         this.walletResponse = walletResponse;
     }
 
-    public Float getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(Float amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 }

@@ -13,12 +13,12 @@ public class CoinAmount extends BaseEntity {
     @JoinColumn(name = "coin_id")
     private Coin coin;
 
-    private Float amount;
+    private Double amount;
 
     public CoinAmount() {
     }
 
-    public CoinAmount(Wallet wallet, Coin coin, Float amount) {
+    public CoinAmount(Wallet wallet, Coin coin, Double amount) {
         this.wallet = wallet;
         this.coin = coin;
         this.amount = amount;
@@ -40,11 +40,11 @@ public class CoinAmount extends BaseEntity {
         this.coin = coin;
     }
 
-    public Float getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(Float amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 }

@@ -32,9 +32,9 @@ public class DbInitializer {
         coinRepository.save(coinETH);
         Coin coinBNB = new Coin("BNB", 393.32);
         coinRepository.save(coinBNB);
-        CoinAmount coinAmountBTC = new CoinAmount(wallet, coinBTC, 2.0000000000001f);
-        CoinAmount coinAmountETH = new CoinAmount(wallet, coinETH, 3f);
-        CoinAmount coinAmountBNB = new CoinAmount(wallet, coinBNB, 100.2f);
+        CoinAmount coinAmountBTC = new CoinAmount(wallet, coinBTC, 2d);
+        CoinAmount coinAmountETH = new CoinAmount(wallet, coinETH, 3d);
+        CoinAmount coinAmountBNB = new CoinAmount(wallet, coinBNB, 100.2d);
         wallet.getCoinAmounts().add(coinAmountBNB);
         wallet.getCoinAmounts().add(coinAmountBTC);
         wallet.getCoinAmounts().add(coinAmountETH);

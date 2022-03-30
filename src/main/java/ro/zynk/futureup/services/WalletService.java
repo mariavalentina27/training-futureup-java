@@ -2,6 +2,7 @@ package ro.zynk.futureup.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ro.zynk.futureup.controllers.requests.CoinExchangeRequest;
 import ro.zynk.futureup.controllers.requests.CoinTransactionRequest;
 import ro.zynk.futureup.controllers.responses.*;
 import ro.zynk.futureup.domain.dtos.Coin;
@@ -10,6 +11,7 @@ import ro.zynk.futureup.domain.dtos.Wallet;
 import ro.zynk.futureup.domain.repositories.CoinAmountRepository;
 import ro.zynk.futureup.domain.repositories.CoinRepository;
 import ro.zynk.futureup.domain.repositories.WalletRepository;
+import ro.zynk.futureup.exceptions.NotEnoughFundsException;
 import ro.zynk.futureup.exceptions.NotFoundException;
 
 import java.util.ArrayList;
@@ -70,15 +72,55 @@ public class WalletService {
         Wallet wallet = walletOpt.get();
 
         // find existing coin amount to update
-        CoinAmount coinAmount = coinAmountRepository.findByWalletAndCoin(wallet, coin);
-        if (coinAmount == null) {
-            // create new coin amount if it doesn't exist
-            coinAmount = new CoinAmount(wallet, coin, 0F);
-        }
+        CoinAmount coinAmount = getOrCreateCoinAmount(coin, wallet);
         coinAmount.setAmount(coinAmount.getAmount() + buyCoinRequest.getAmount());
 
         coinAmountRepository.save(coinAmount);
         return new CoinTransactionResponse(new CoinResponse(coin), new WalletResponse(wallet), coinAmount.getAmount());
+    }
+
+    public CoinTransactionResponse exchangeCoin(CoinExchangeRequest coinExchangeRequest) {
+        Optional<CoinAmount> coinAmountOpt = coinAmountRepository.findById(coinExchangeRequest.getCoinAmountId());
+        Optional<Coin> coinOpt = coinRepository.findById(coinExchangeRequest.getCoinId());
+        if (coinOpt.isEmpty()) {
+            throw new NotFoundException("Coin not found!");
+        }
+        if (coinAmountOpt.isEmpty()) {
+            throw new NotFoundException("CoinAmount not found!");
+        }
+
+        Coin coin = coinOpt.get();
+        CoinAmount existingCoinAmount = coinAmountOpt.get();
+
+        double valueOfBoughtCoinsInUsd = coin.getValue() * coinExchangeRequest.getAmount();
+        double valueOfHeldCoinAmountInUsd = existingCoinAmount.getCoin().getValue() * existingCoinAmount.getAmount();
+
+        if (valueOfBoughtCoinsInUsd > valueOfHeldCoinAmountInUsd) {
+            throw new NotEnoughFundsException("Not enough funds to buy the desired coin amount!");
+        }
+
+        CoinAmount desiredCoinAmount = getOrCreateCoinAmount(coin, existingCoinAmount.getWallet());
+
+        existingCoinAmount.setAmount((valueOfHeldCoinAmountInUsd - valueOfBoughtCoinsInUsd)/existingCoinAmount.getCoin().getValue());
+        desiredCoinAmount.setAmount(desiredCoinAmount.getAmount() + valueOfBoughtCoinsInUsd/desiredCoinAmount.getCoin().getValue());
+
+        coinAmountRepository.save(existingCoinAmount);
+        coinAmountRepository.save(desiredCoinAmount);
+
+        return new CoinTransactionResponse(desiredCoinAmount);
+    }
+
+    private void checkIfEnoughFunds(CoinExchangeRequest coinExchangeRequest, Coin coin, CoinAmount coinAmount) throws NotEnoughFundsException {
+
+    }
+
+    private CoinAmount getOrCreateCoinAmount(Coin coin, Wallet wallet) {
+        CoinAmount coinAmount = coinAmountRepository.findByWalletAndCoin(wallet, coin);
+        if (coinAmount == null) {
+            // create new coin amount if it doesn't exist
+            coinAmount = new CoinAmount(wallet, coin, 0d);
+        }
+        return coinAmount;
     }
 
     public ListCoinTransactionResponse getAllCoinsFromWallet(Long walletId) throws NotFoundException {
@@ -94,5 +136,4 @@ public class WalletService {
         }
         return new ListCoinTransactionResponse(coinTransactionResponses);
     }
-
 }

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ro.zynk.futureup.controllers.requests.CoinExchangeRequest;
 import ro.zynk.futureup.controllers.requests.CoinTransactionRequest;
 import ro.zynk.futureup.controllers.responses.BaseResponse;
 import ro.zynk.futureup.controllers.responses.ErrorResponse;
@@ -50,6 +51,15 @@ public class WalletController {
     public ResponseEntity<BaseResponse> buyCoin(@RequestBody CoinTransactionRequest buyCoinRequest) {
         try {
             return new ResponseEntity<>(walletService.buyCoin(buyCoinRequest), HttpStatus.OK);
+        } catch (NotFoundException e) {
+            return new ResponseEntity<>(new ErrorResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping(value = "/exchange_coin")
+    public ResponseEntity<BaseResponse> exchangeCoin(@RequestBody CoinExchangeRequest coinExchangeRequest) {
+        try {
+            return new ResponseEntity<>(walletService.exchangeCoin(coinExchangeRequest), HttpStatus.OK);
         } catch (NotFoundException e) {
             return new ResponseEntity<>(new ErrorResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
         }
