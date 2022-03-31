@@ -13,6 +13,7 @@ public class CoinAmount extends BaseEntity {
     @JoinColumn(name = "coin_id")
     private Coin coin;
 
+    @Column
     private Double amount;
 
     public CoinAmount() {
