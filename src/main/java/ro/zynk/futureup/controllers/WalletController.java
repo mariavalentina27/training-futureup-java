@@ -72,6 +72,15 @@ public class WalletController {
         } catch (NotFoundException e) {
             return new ResponseEntity<>(new ErrorResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
         }
+    }
 
+    /*  Assignment 1 */
+    @GetMapping(value = "/get_total_value_USD/{walletId}")
+    public Object getTotalValueOfCoinsUSD(@PathVariable("walletId") Long walletId) {
+        try {
+            return new ResponseEntity<>(walletService.getTotalUSDValueFromWallet(walletId), HttpStatus.OK);
+        } catch (NotFoundException e) {
+            return new ResponseEntity<>(new ErrorResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
+        }
     }
 }

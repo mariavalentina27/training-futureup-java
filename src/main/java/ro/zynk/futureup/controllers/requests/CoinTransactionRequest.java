@@ -3,7 +3,7 @@ package ro.zynk.futureup.controllers.requests;
 public class CoinTransactionRequest {
     private Long coinId;
     private Long walletId;
-    private Float amount;
+    private Double amount;
 
 
     public Long getCoinId() {
@@ -22,11 +22,11 @@ public class CoinTransactionRequest {
         this.walletId = walletId;
     }
 
-    public Float getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(Float amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 }

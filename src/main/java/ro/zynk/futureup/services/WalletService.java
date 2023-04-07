@@ -7,13 +7,16 @@ import ro.zynk.futureup.controllers.requests.CoinTransactionRequest;
 import ro.zynk.futureup.controllers.responses.*;
 import ro.zynk.futureup.domain.dtos.Coin;
 import ro.zynk.futureup.domain.dtos.CoinAmount;
+import ro.zynk.futureup.domain.dtos.Transaction;
 import ro.zynk.futureup.domain.dtos.Wallet;
 import ro.zynk.futureup.domain.repositories.CoinAmountRepository;
 import ro.zynk.futureup.domain.repositories.CoinRepository;
+import ro.zynk.futureup.domain.repositories.TransactionRepository;
 import ro.zynk.futureup.domain.repositories.WalletRepository;
 import ro.zynk.futureup.exceptions.NotEnoughFundsException;
 import ro.zynk.futureup.exceptions.NotFoundException;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -23,12 +26,14 @@ public class WalletService {
     private final WalletRepository walletRepository;
     private final CoinRepository coinRepository;
     private final CoinAmountRepository coinAmountRepository;
+    private final TransactionRepository transactionRepository;
 
     @Autowired
-    public WalletService(WalletRepository walletRepository, CoinRepository coinRepository, CoinAmountRepository coinAmountRepository) {
+    public WalletService(WalletRepository walletRepository, CoinRepository coinRepository, CoinAmountRepository coinAmountRepository, TransactionRepository transactionRepository) {
         this.walletRepository = walletRepository;
         this.coinRepository = coinRepository;
         this.coinAmountRepository = coinAmountRepository;
+        this.transactionRepository = transactionRepository;
     }
 
     public WalletResponse saveNewWallet(WalletResponse walletResponse) {
@@ -70,6 +75,17 @@ public class WalletService {
 
         Coin coin = coinOpt.get();
         Wallet wallet = walletOpt.get();
+
+        /* Assignment 2 */
+        ///find the total USD value for this transaction
+        float totalValue = transactionRepository.getTotalTransactionValue(buyCoinRequest, coin);
+        ///set the date variable to the current date
+        Date date = new Date(System.currentTimeMillis());
+        ///create the transaction variable which contains the date, the coin that is bought, the number of coins - amount and the total USD value
+        Transaction transaction;
+        transaction = new Transaction(date, coin, buyCoinRequest.getAmount(), totalValue);
+        ///save the new transaction in the transaction database using the save method
+        transactionRepository.save(transaction);
 
         // find existing coin amount to update
         CoinAmount coinAmount = getOrCreateCoinAmount(coin, wallet);
@@ -135,5 +151,20 @@ public class WalletService {
             coinTransactionResponses.add(new CoinTransactionResponse(coinAmount));
         }
         return new ListCoinTransactionResponse(coinTransactionResponses);
+    }
+
+    /* Assignment 1 */
+    public float getTotalUSDValueFromWallet(Long walletId) throws NotFoundException {
+        Optional<Wallet> walletOpt = walletRepository.findById(walletId);
+        float TotalValue = 0;
+        if (walletOpt.isEmpty()) {
+            throw new NotFoundException("Wallet not found!");
+        } else {
+            List<CoinAmount> coinAmounts = coinAmountRepository.findAllByWallet(walletOpt.get());
+            for (CoinAmount coinAmount : coinAmounts) {
+                TotalValue += coinAmount.getCoin().getValue() * coinAmount.getAmount();
+            }
+        }
+        return TotalValue;
     }
 }
